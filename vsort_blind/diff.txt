@@ -1,0 +1,79 @@
+20d19
+< #include <commctrl.h>
+26,27d24
+< #include "../../src/control.h"
+< #include "../../src/draw.h"
+219c216
+< HWND consoleWindow, graphicsWindow;
+---
+> static HWND consoleWindow, graphicsWindow;
+230c227
+< int pixelWidth, pixelHeight;
+---
+> static int pixelWidth, pixelHeight;
+1064,1065d1060
+< extern HWND hwndTrack;
+< 
+1078d1072
+< 	DWORD dwPos;
+1172,1199d1165
+<             
+<         case WM_HSCROLL:
+<         	dwPos = SendMessage(hwndTrack, TBM_GETPOS, 0, 0);
+<         	ctrl.interval = intervals[dwPos];
+<         	redraw();
+<         	if (LOWORD(wParam) == TB_ENDTRACK)
+<         	{
+<         		SetFocus(graphicsWindow);
+<         		if (ctrl.playing)
+<         		{
+< 		        	cancelTimer(0);
+< 		        	startTimer(0, ctrl.interval);
+< 		        }
+<         	}
+<         	return 0;
+<         
+<         case WM_CTLCOLORSTATIC:
+<         {
+<         	HDC hdcStatic = (HDC) wParam;
+< 	        SetTextColor(hdcStatic, RGB(0,0,0));
+< 	        SetBkColor(hdcStatic, RGB(255,255,255));
+< 			static HBRUSH hbrBkgnd;
+< 	        if (hbrBkgnd == NULL)
+< 	        {
+< 	            hbrBkgnd = CreateSolidBrush(RGB(255,255,255));
+< 	        }
+< 	        return (INT_PTR)hbrBkgnd;
+<        	}
+1273,1277c1239
+< 	int x = (ToolbarMargin + TextStringWidth("Speed: ") + TrackbarWidth) * GetXResolution();
+< 	int y = (winHeight - ToolbarMargin) * GetYResolution() - 30;
+<     SetRect(&r, 0, 0, pixelWidth, y);
+<     InvalidateRect(graphicsWindow, &r, TRUE);
+<     SetRect(&r, x, y, pixelWidth, pixelHeight);
+---
+>     SetRect(&r, 0, 0, pixelWidth, pixelHeight);
+1289,1291d1250
+<  
+< extern bool OverrideRGB;
+< extern int OverrideR, OverrideG, OverrideB;
+1306,1311c1265
+<     	if (OverrideRGB)
+<     	{
+<     		drawColor = RGB(OverrideR, OverrideG, OverrideB);
+<     		previousColor = -1;
+<     	}
+<         else if (penColor != previousColor) {
+---
+>         if (penColor != previousColor) {
+1452d1405
+< //  printf("%lf %lf\n", x, y);
+1689,1694d1641
+< void ForcePenReset()
+< {
+< 	DeleteObject(drawPen);
+<     drawPen = (HPEN) CreatePen(PS_SOLID, penSize, drawColor);
+< }
+< 
+1702d1648
+< //	ForcePenReset();
